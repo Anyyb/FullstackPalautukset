@@ -18,11 +18,5 @@ sequenceDiagram
   A browser ->> B server: GET https:// .../data.json
   B server ->> A browser: Json file
   
-  // Käyttäjä lisää uuden muistiinpanon sivulle ja sivu lähettää vain yhden pyynnön:
-  
-  C user->> A browser : Add a new note
-  A browser ->> B server: POST new_note to: https:// .../spa/new_note_spa
-  B server ->> A browser: confirm note 201
-
-  // "spa.js" käsittelee uuden muistiinpanon lisäyksen pyynnön koodissa.
+ 
   
