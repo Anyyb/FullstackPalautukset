@@ -1,0 +1,28 @@
+sequenceDiagram
+  participant A browser
+  participant B server
+  participant C user
+
+  // ensin spa sivun lataamisen tapahtumasarja:
+  A browser->> B server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+  B server ->> A browser: HTML document
+  
+  //suoritus jatkuu aina seuraavaan tarvittavaan osioon sivun renderöintiä varten.
+  
+  A browser ->> B server: GET https:// .../main.css
+  B server ->> A browser: CSS style sheets
+  
+  A browser ->> B server: GET https:// .../spa.js
+  B server ->> A browser: JavaScript file
+  
+  A browser ->> B server: GET https:// .../data.json
+  B server ->> A browser: Json file
+  
+  // Käyttäjä lisää uuden muistiinpanon sivulle ja sivu lähettää vain yhden pyynnön:
+  
+  C user->> A browser : Add a new note
+  A browser ->> B server: POST new_note to: https:// .../spa/new_note_spa
+  B server ->> A browser: confirm note 201
+
+  // "spa.js" käsittelee uuden muistiinpanon lisäyksen pyynnön koodissa.
+  
