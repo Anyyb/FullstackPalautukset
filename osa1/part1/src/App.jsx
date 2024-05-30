@@ -7,13 +7,20 @@ const App = () => {
   const part3 = 'State of a component'
   const exercises3 = 14
   const totalExercises = exercises1 + exercises2 + exercises3;
+ 
 
   return (
     <div>
       <Header course={course} />
+      {/* 
       <Content content={part1} ex={exercises1} />
       <Content content={part2} ex={exercises2} />
       <Content content={part3} ex={exercises3} />
+      */}
+      <Content 
+        part1={part1} exercises1={exercises1} 
+        part2={part2} exercises2={exercises2} 
+        part3={part3} exercises3={exercises3} />
       <Total total={totalExercises} />
     </div>
   )
@@ -21,15 +28,25 @@ const App = () => {
 const Header = (props) => {
   return (
     <div>
-      <p>Course: {props.course}</p>
-      
+      <p>Course: {props.course}</p>  
     </div>
   )
 }
+const Part = (props) => {
+  return (
+    <div>
+    <p> Content: {props.part} <br></br>Exercises: {props.exercises} </p>
+    </div>
+  );
+};
+
 const Content = (props) => {
   return (
     <div>
-    <p> Content: {props.content}, {props.ex}</p>
+      {/* <p> Content: {props.content}, {props.ex}</p> */}
+      <Part part={props.part1} exercises={props.exercises1}  />
+      <Part part={props.part2} exercises={props.exercises2}  />
+      <Part part={props.part3} exercises={props.exercises3}  />
     </div>
   )
 }
@@ -40,5 +57,4 @@ const Total = (props) => {
     </div>
   )
 }
-
 export default App
