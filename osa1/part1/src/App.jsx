@@ -12,11 +12,13 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      {/* 
+      {/* Step1 ja 2 (1.1-1.2):
       <Content content={part1} ex={exercises1} />
       <Content content={part2} ex={exercises2} />
       <Content content={part3} ex={exercises3} />
       */}
+
+       {/*App komponentti on asetettu käyttämään Content komponenttia ja sille on asetettu oikeat osiot sekä tehtävät. */}
       <Content 
         part1={part1} exercises1={exercises1} 
         part2={part2} exercises2={exercises2} 
@@ -32,6 +34,7 @@ const Header = (props) => {
     </div>
   )
 }
+{/* Part komponenttiin on määritetty, miten yksi osa renderöidään. */}
 const Part = (props) => {
   return (
     <div>
@@ -39,17 +42,18 @@ const Part = (props) => {
     </div>
   );
 };
-
+ {/* Content komponentti käyttää propseja ja part komponenttia renderöidäkseen tiedot 3 riviin. */}
 const Content = (props) => {
   return (
     <div>
-      {/* <p> Content: {props.content}, {props.ex}</p> */}
+      {/* Step1 ja 2 (1.1-1.2): <p> Content: {props.content}, {props.ex}</p> */}
       <Part part={props.part1} exercises={props.exercises1}  />
       <Part part={props.part2} exercises={props.exercises2}  />
       <Part part={props.part3} exercises={props.exercises3}  />
     </div>
   )
 }
+ {/* Total on määritelty renderöimään tehtävien yhteismäärä*/}
 const Total = (props) => {
   return (
     <div>
