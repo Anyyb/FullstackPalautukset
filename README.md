@@ -1,2 +1,2 @@
 # FullstackPalautukset
-Palautukset kurssille
+Palautukset kurssille Fullstack Open
