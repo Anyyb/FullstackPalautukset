@@ -1,20 +1,22 @@
 const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [
-    {
-      name: 'Fundamentals of React',
-      exercises: 10
-    },
-    {
-      name: 'Using props to pass data',
-      exercises: 7
-    },
-    {
-      name: 'State of a component',
-      exercises: 14
-    }
-  ]
-  const totalExercises = parts[0].exercises + parts[1].exercises + parts[2].exercises;
+  const course = {
+    name: 'Half Stack application development',
+    parts:[
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
+  const totalExercises = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises;
  
 
   return (
@@ -26,8 +28,8 @@ const App = () => {
       <Content content={part3} ex={exercises3} />
       */}
 
-       {/*App komponentti on asetettu käyttämään Content komponenttia ja sille on asetettu lista part joka sisältää tiedot. */}
-      <Content part={parts} />
+       {/*App komponentti on asetettu käyttämään Content komponenttia ja sille on asetettu course oliossa oleva lista parts, joka sisältää tiedot. */}
+      <Content part={course.parts} />
       <Total total={totalExercises} />
     </div>
   )
@@ -35,7 +37,7 @@ const App = () => {
 const Header = (props) => {
   return (
     <div>
-      <p>Course: {props.course}</p>  
+      <p>Course: {props.course.name}</p>  
     </div>
   )
 }
