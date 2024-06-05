@@ -1,71 +1,51 @@
+import { useState } from 'react'
+
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts:[
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+  // tallenna napit omaan tilaansa
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  {/*Jos haluan tallentaa kaikki klikkaukset tilaan statistics
+  const [clicks, setStatistics] = useState([])*/}
+
+  {/*Käsitellään nappien painallukset*/}
+  
+  const handleGoodClick = () =>{
+    console.log('clicked GOOD')
+    {/*setStatistics(clicks.concat('Good:'))*/}
+    setGood(good+1)
   }
-  const totalExercises = course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises;
- 
+  const handleNeutralClick = () =>{
+    console.log('clicked NEUTRAL')
+    {/*setStatistics(clicks.concat('Neutral:'))*/}
+    setNeutral(neutral+1)
+  }
+  const handleBadClick = () =>{
+    console.log('clicked BAD')
+    {/*setStatistics(clicks.concat('Bad:'))*/}
+    setBad(bad+1)
+  }
 
   return (
     <div>
-      <Header course={course} />
-      {/* Step1 ja 2 (1.1-1.2):
-      <Content content={part1} ex={exercises1} />
-      <Content content={part2} ex={exercises2} />
-      <Content content={part3} ex={exercises3} />
-      */}
+      <div>
+        <h1> Give feedback</h1>
+        {/*tehdään buttonit ja asetetaan niihin tapahtumankäsittelijät*/}
+        <button onClick={handleGoodClick}>Good</button>
+        <button onClick={handleNeutralClick}>Neutral</button> 
+        <button onClick={handleBadClick}>Bad</button> 
+        {/* <button onClick ={()=> setGood(good+1)}> Good </button>
+        <button onClick ={()=> setNeutral(neutral+1)}> Neutral </button>
+        <button onClick ={()=> setBad(bad+1)}> Bad </button>*/}
+        
+        {/*Näytetään painallusten tulokset*/}
+        <h1> Statistics: </h1>
+        <h3> Good: {good} </h3>
+        <h3> Neutral: {neutral} </h3>
+        <h3> Bad: {bad} </h3>
+      </div>
+    </div>
+  )
+}
 
-       {/*App komponentti on asetettu käyttämään Content komponenttia ja sille on asetettu course oliossa oleva lista parts, joka sisältää tiedot. */}
-      <Content part={course.parts} />
-      <Total total={totalExercises} />
-    </div>
-  )
-}
-const Header = (props) => {
-  return (
-    <div>
-      <p>Course: {props.course.name}</p>  
-    </div>
-  )
-}
-{/* Part komponenttiin on määritetty, miten yksi osa renderöidään. */}
-const Part = (props) => {
-  return (
-    <div>
-    <p> Content: {props.name} <br></br>Exercises: {props.exercises} </p>
-    </div>
-  );
-};
- {/* Content komponentti käyttää propseja ja part komponenttia renderöidäkseen tiedot 3 riviin. */}
-const Content = (props) => {
-  return (
-    <div>
-      {/* Step1 ja 2 (1.1-1.2): <p> Content: {props.content}, {props.ex}</p> */}
-      <Part name={props.part[0].name} exercises={props.part[0].exercises} />
-      <Part name={props.part[1].name} exercises={props.part[1].exercises} />
-      <Part name={props.part[2].name} exercises={props.part[2].exercises} />
-    </div>
-  )
-}
- {/* Total on määritelty renderöimään tehtävien yhteismäärä*/}
-const Total = (props) => {
-  return (
-    <div>
-      <p> Total number of exercises: {props.total}</p>
-    </div>
-  )
-}
 export default App
