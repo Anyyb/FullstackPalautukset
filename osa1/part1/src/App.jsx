@@ -25,14 +25,26 @@ const App = () => {
       <div>
         <h1> Give feedback</h1>
         {/*tehdään buttonit ja asetetaan niihin tapahtumankäsittelijät*/}
-        <button onClick={handleGoodClick}>Good</button>
-        <button onClick={handleNeutralClick}>Neutral</button> 
-        <button onClick={handleBadClick}>Bad</button> 
+        <Button handleClick={handleGoodClick} text="Good"/>
+        <Button handleClick={handleNeutralClick}text="Neutral"/> 
+        <Button handleClick={handleBadClick}text="Bad"/> 
     
         {/*Näytetään painallusten tulokset*/}
         <Statistics good={good} neutral={neutral} bad={bad} />
       </div>
     </div>
+  )
+}
+{/* Napin komponentti*/}
+const Button =(props)=>{
+  return (
+<button onClick={props.handleClick}>{props.text}</button>
+)
+}
+{/*Tilastojen renderöinnin komponentti, miten teksti renderöidään.*/}
+const StatisticLine =(props)=>{
+  return(
+    <h3>{props.text}: {props.value}</h3>
   )
 }
 
@@ -56,16 +68,17 @@ keskiarvo ja positiivisten prosentti osuus.*/}
   const average = valuesSum / all;
   const positive = (good / all) * 100;
  {
-  if (good > 0 || neutral > 0 || bad > 0){
+  if (all > 0){
     return (
       <div>
         <h1> Statistics:</h1>
-        <h3> Good: {good}</h3>
-        <h3> Neutral: {neutral}</h3>
-        <h3> Bad: {bad}</h3>
-        <h3> All: {all}</h3>
-        <h3> Average: {average}</h3>
-        <h3> Positive: {positive}%</h3>
+        <StatisticLine text="Good" value ={good} />
+        <StatisticLine text="Neutral" value ={neutral} />
+        <StatisticLine text="Bad" value ={bad} />
+
+        <StatisticLine text="All" value ={all} />
+        <StatisticLine text="Average" value ={average} />
+        <StatisticLine text="Positive" value ={positive} />
       </div>
     )
   } else {
