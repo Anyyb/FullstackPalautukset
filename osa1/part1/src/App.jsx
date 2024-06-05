@@ -5,27 +5,21 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  {/*Jos haluan tallentaa kaikki klikkaukset tilaan statistics
-  const [clicks, setStatistics] = useState([])*/}
-
-  {/*Käsitellään nappien painallukset*/}
+ 
   
+  {/*Käsitellään nappien painallukset*/}
   const handleGoodClick = () =>{
     console.log('clicked GOOD')
-    {/*setStatistics(clicks.concat('Good:'))*/}
     setGood(good+1)
   }
   const handleNeutralClick = () =>{
     console.log('clicked NEUTRAL')
-    {/*setStatistics(clicks.concat('Neutral:'))*/}
     setNeutral(neutral+1)
   }
   const handleBadClick = () =>{
     console.log('clicked BAD')
-    {/*setStatistics(clicks.concat('Bad:'))*/}
     setBad(bad+1)
   }
-
   return (
     <div>
       <div>
@@ -34,17 +28,44 @@ const App = () => {
         <button onClick={handleGoodClick}>Good</button>
         <button onClick={handleNeutralClick}>Neutral</button> 
         <button onClick={handleBadClick}>Bad</button> 
-        {/* <button onClick ={()=> setGood(good+1)}> Good </button>
-        <button onClick ={()=> setNeutral(neutral+1)}> Neutral </button>
-        <button onClick ={()=> setBad(bad+1)}> Bad </button>*/}
         
         {/*Näytetään painallusten tulokset*/}
-        <h1> Statistics: </h1>
-        <h3> Good: {good} </h3>
-        <h3> Neutral: {neutral} </h3>
-        <h3> Bad: {bad} </h3>
+        <Statistics good={good} neutral={neutral} bad={bad} />
       </div>
     </div>
+  )
+}
+
+{/*Tilastojen komponentti*/}
+const Statistics = (props) =>{
+{/*Asetetaan palautteille arvot*/}
+  const goodValue = 1;
+  const neutralValue = 0;
+  const badValue = -1;
+
+{/*Asetetaan palautteille propsit, jotta voidaan määrittää ja renderöidä oikein*/}
+  const good = props.good;
+  const neutral = props.neutral;
+  const bad = props.bad;
+
+{/*laskukaavat kaikkien arvojen summa, kaikkien arvostelujen yhteismäärä, 
+keskiarvo ja positiivisten prosentti osuus.*/}
+
+  const valuesSum = good * goodValue + neutral * neutralValue + bad * badValue;
+  const all = good + neutral + bad;
+  const average = valuesSum / all;
+  const positive = (good / all) * 100;
+
+  return (
+  <div>
+    <h1> Statistics:</h1>
+    <h3> Good: {good}</h3>
+    <h3> Neutral: {neutral}</h3>
+    <h3> Bad: {bad}</h3>
+    <h3> All: {all}</h3>
+    <h3> Average: {average}</h3>
+    <h3> Positive: {positive}%</h3>
+  </div>
   )
 }
 
