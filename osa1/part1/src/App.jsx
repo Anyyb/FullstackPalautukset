@@ -28,7 +28,7 @@ const App = () => {
         <button onClick={handleGoodClick}>Good</button>
         <button onClick={handleNeutralClick}>Neutral</button> 
         <button onClick={handleBadClick}>Bad</button> 
-        
+    
         {/*Näytetään painallusten tulokset*/}
         <Statistics good={good} neutral={neutral} bad={bad} />
       </div>
@@ -55,18 +55,26 @@ keskiarvo ja positiivisten prosentti osuus.*/}
   const all = good + neutral + bad;
   const average = valuesSum / all;
   const positive = (good / all) * 100;
-
-  return (
-  <div>
-    <h1> Statistics:</h1>
-    <h3> Good: {good}</h3>
-    <h3> Neutral: {neutral}</h3>
-    <h3> Bad: {bad}</h3>
-    <h3> All: {all}</h3>
-    <h3> Average: {average}</h3>
-    <h3> Positive: {positive}%</h3>
-  </div>
-  )
+ {
+  if (good > 0 || neutral > 0 || bad > 0){
+    return (
+      <div>
+        <h1> Statistics:</h1>
+        <h3> Good: {good}</h3>
+        <h3> Neutral: {neutral}</h3>
+        <h3> Bad: {bad}</h3>
+        <h3> All: {all}</h3>
+        <h3> Average: {average}</h3>
+        <h3> Positive: {positive}%</h3>
+      </div>
+    )
+  } else {
+      return (
+        <div>
+          <h3> No feedback given </h3>
+        </div>
+    )
+  }
 }
-
+}
 export default App
