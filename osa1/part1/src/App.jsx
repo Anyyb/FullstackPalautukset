@@ -44,7 +44,13 @@ const Button =(props)=>{
 {/*Tilastojen renderöinnin komponentti, miten teksti renderöidään.*/}
 const StatisticLine =(props)=>{
   return(
-    <h3>{props.text}: {props.value}</h3>
+    <tbody>
+      <tr>
+      <td>
+      {props.text}: {props.value}
+      </td>
+      </tr>
+    </tbody>
   )
 }
 
@@ -72,6 +78,7 @@ keskiarvo ja positiivisten prosentti osuus.*/}
     return (
       <div>
         <h1> Statistics:</h1>
+        <table>
         <StatisticLine text="Good" value ={good} />
         <StatisticLine text="Neutral" value ={neutral} />
         <StatisticLine text="Bad" value ={bad} />
@@ -79,6 +86,7 @@ keskiarvo ja positiivisten prosentti osuus.*/}
         <StatisticLine text="All" value ={all} />
         <StatisticLine text="Average" value ={average} />
         <StatisticLine text="Positive" value ={positive} />
+        </table>
       </div>
     )
   } else {
