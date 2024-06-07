@@ -1,40 +1,70 @@
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    id: 1,
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      },
-    ]
-  }
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
   return (
     <div>
-      <Course course={course} />
+      <Course course={courses} />
     </div>
   )
 }
-{/* Course komponentti käyttää header ja content komponentteja nimen ja osien renderöintiin.*/}
+{/* Course komponentti käyttää header content ja total komponentteja nimen, osien ja tehtävien summan renderöintiin.*/}
 const Course = (props) => {
   console.log("Coursen propsit", props)
   const { course } = props
   return (
     <div>
-       <Header course={course} /> 
-       <Content parts={course.parts} /> 
-       <Total parts={course.parts} />
+      {/* Course komponentti käyttää map-metodia ja id avainta päästäkseen käsiksi listan jokaisen kurssin tietoihin 
+      käsiteltäessä osioita ja luodessa uusia osioita.*/}
+        {course.map(course => 
+          <div key={course.id}>
+             <Header course={course} /> 
+             <Content parts={course.parts} /> 
+             <Total parts={course.parts} />
+          </div>
+        )}
+      
     </div>
   )
 }
