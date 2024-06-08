@@ -51,7 +51,13 @@ const App = () => {
     if(check){
       alert(`${newName} löytyy jo listalta`)
     } else {
-    setPersons(persons.concat(names))
+      axios
+        .post('http://localhost:3001/persons', names)
+        .then(response => {
+        console.log(response)
+        setPersons(persons.concat(response.data))
+        
+    })
     setNewName('')
   }
 }
@@ -67,7 +73,13 @@ const App = () => {
     if (check) {
       alert(`${newNumber} löytyy jo listalta`)
     } else {
-    setPersons(persons.concat(numbers))
+      axios
+        .post('http://localhost:3001/persons', numbers)
+        .then(response => {
+        console.log(response)
+        setPersons(persons.concat(response.data))
+        
+    })
     setNewName('')
     setNewNumber('')
   }
