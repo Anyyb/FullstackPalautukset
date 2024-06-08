@@ -72,7 +72,6 @@ const App = () => {
     if (check) {
       alert(`${newNumber} löytyy jo listalta`)
     } else {
-
       server
         .addNewNumber(numbers)
         .then(response => {
@@ -84,12 +83,33 @@ const App = () => {
     setNewNumber('')
   }
 }
+
+{/* Henkilön poistamisen tapahtumankäsittelijäfunktio */}
+const deletePerson = (id) => {
+{/* kommunikointi palvelimen kanssa tapahtuu erillisen server.js moduulin kautta */}
+  server
+    .deleteNameandNumber(id)
+    .then(response => {
+      console.log('Deleted:', response.data);
+      setPersons(persons.filter(person => person.id !== id))
+     {/* poisto tapahtuu id:n perusteella ja lisäämme kyseisen id:n muuttujaan findName
+      lause etsii oikean nimen poistettavan id:n mukaan ja sitä käytetään confirm lauseessa. */}
+      const findName= (persons.find(person => person.id === id))
+      if (window.confirm(`Delete ${findName.name}?`)) {
+        alert("Person removed from phonebook")
+      }
+    })
+    .catch(error => {
+      console.error("Error dataa poistettaessa", error)
+})
+console.log('henkilö poistettu')
+}
+
 {/* Käsittelee suoritettavan haun ja päivittää sen search tilaan */}
 const handleSearch = (event) => {
   const query = event.target.value
   setSearch(query)
 }
-
 {/* muuttuja peopleToSow tallettaa näytettävien nimien listan search tilaan,
   riippuen suoritetusta haun tuloksesta.*/}
 const peopleToShow = search
@@ -106,7 +126,7 @@ const peopleToShow = search
       <Formfield handleSubmit={handleSubmit} newName={newName}
       handleName={handleName} newNumber={newNumber} handleNumber={handleNumber}/>
       <h2>Numbers</h2>
-      <PhonebookList peopleToShow={peopleToShow}/>
+      <PhonebookList peopleToShow={peopleToShow}deletePerson={deletePerson}/>
     </div>
   )
 }
@@ -155,7 +175,9 @@ const PhonebookList = (props) => {
        Nimi toimii uniikkina Id:nä. */}
       <ul>
       {props.peopleToShow.map(person => (
-      <li key={person.name}>{person.name}: {person.number}</li>
+      <li key={person.name}>{person.name}: {person.number}: 
+       <button onClick={() => props.deletePerson(person.id)}>Delete</button>
+      </li>
       ))}
     </ul>
     </div>
