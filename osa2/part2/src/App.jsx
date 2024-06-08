@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import server from './services/server'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -7,17 +7,16 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
 
-   {/* Haetaan dataa palvelimelta axios.get hakee tiedot palvelimelta (palvelimen oisoite) 
-   jos yhteys onnistuu ja palvelin on käynnissä promise on fulfilled ja haettu data 
-   asetetaan renderöitäväksi app-komponentin persons tilaan. */}
+   {/* moduuli server käsittelee yhteyden palvelimella axios.get:llä ja postilla.
+     App komponentti käytetään moduulia tietojen lisäämiseen ja hakemiseen palvelimelta ja palvelimelle. */}
+   
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons') 
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
+    server
+    .getAll()
+    .then(response => {
+      setPersons(response.data)
+    })
   }, [])
 
   {/* Tapahtumankäsittelijä lomakkeen käsittelylle,
@@ -51,8 +50,8 @@ const App = () => {
     if(check){
       alert(`${newName} löytyy jo listalta`)
     } else {
-      axios
-        .post('http://localhost:3001/persons', names)
+      server
+        .addNewName(names)
         .then(response => {
         console.log(response)
         setPersons(persons.concat(response.data))
@@ -73,8 +72,9 @@ const App = () => {
     if (check) {
       alert(`${newNumber} löytyy jo listalta`)
     } else {
-      axios
-        .post('http://localhost:3001/persons', numbers)
+
+      server
+        .addNewNumber(numbers)
         .then(response => {
         console.log(response)
         setPersons(persons.concat(response.data))
@@ -86,8 +86,8 @@ const App = () => {
 }
 {/* Käsittelee suoritettavan haun ja päivittää sen search tilaan */}
 const handleSearch = (event) => {
-  const query = event.target.value;
-  setSearch(query);
+  const query = event.target.value
+  setSearch(query)
 }
 
 {/* muuttuja peopleToSow tallettaa näytettävien nimien listan search tilaan,
@@ -95,7 +95,7 @@ const handleSearch = (event) => {
 const peopleToShow = search
   ? persons.filter(person =>
     person.name.toLowerCase().includes(search.toLowerCase()))
-  : persons;
+  : persons
 
 
   return (
