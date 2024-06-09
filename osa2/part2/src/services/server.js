@@ -18,12 +18,16 @@ const addNewNumber = (newNumber) => {
   return axios.post(baseUrl, newNumber)
 }
 const deleteNameandNumber = (id) => {
-  return axios.delete(`${baseUrl}/${id}`);
+  return axios.delete(`${baseUrl}/${id}`)
+}
+const updateNumber = (id, newNumber) => {
+  return axios.put(`${baseUrl}/${id}`, newNumber)
 }
 
 export default {
-    getAll: getAll,
-    addNewName: addNewName,
-    addNewNumber: addNewNumber,
-    deleteNameandNumber:deleteNameandNumber
+    getAll,
+    addNewName,
+    addNewNumber,
+    deleteNameandNumber,
+    updateNumber
 }

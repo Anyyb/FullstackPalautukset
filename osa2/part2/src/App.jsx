@@ -37,7 +37,7 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
- {/* Nimen lisäyksen tapahtumankäsittelijä */}
+ {/* Nimen lisäyksen tapahtumankäsittelijä ja numeron päivitys*/}
   const addNewName= (event) => {
     {/* Lomakkeen oletusarvoinen toiminta estetty */}
     event.preventDefault()
@@ -48,7 +48,19 @@ const App = () => {
     const check = persons.find(({ name }) => name === newName)
     console.log(check)
     if(check){
-      alert(`${newName} löytyy jo listalta`)
+      if (window.confirm(`${check.name} ${newNumber} already in the phonebook. Update existing number?`)) 
+    {
+        server
+          .updateNumber(check.id, check.number)
+          .then(response => {
+          console.log(response)
+          setPersons(persons.map(person => person.id !== check.id ? person: response.data))
+          setNewNumber('')
+      })
+        .catch(error => {
+         console.error('virhe päivittäessä')
+      })
+    }
     } else {
       server
         .addNewName(names)
@@ -70,14 +82,13 @@ const App = () => {
     const check = persons.find(({ number }) => number === newNumber)
     console.log(check)
     if (check) {
-      alert(`${newNumber} löytyy jo listalta`)
+      alert(`${newNumber} already on the list`)
     } else {
       server
         .addNewNumber(numbers)
         .then(response => {
         console.log(response)
-        setPersons(persons.concat(response.data))
-        
+        setPersons(persons.concat(response.data))    
     })
     setNewName('')
     setNewNumber('')
