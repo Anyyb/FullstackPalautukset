@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import server from './services/server'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
    {/* moduuli server käsittelee yhteyden palvelimella axios.get:llä ja postilla.
      App komponentti käytetään moduulia tietojen lisäämiseen ja hakemiseen palvelimelta ja palvelimelle. */}
@@ -44,11 +46,14 @@ const App = () => {
     console.log('Uusi nimi lisätty')
     const names = {
      name: newName,
-     number: ''}
+     number: newNumber}
     const check = persons.find(({ name }) => name === newName)
     console.log(check)
     if(check){
-      if (window.confirm(`${check.name} ${newNumber} already in the phonebook. Update existing number?`)) 
+      setErrorMessage(`${check.name} already in the phonebook. Update existing number to ${newNumber} ?`)
+      setTimeout(() => {
+      setErrorMessage(null)
+      }, 3000)
     {
         server
           .updateNumber(check.id, check.number)
@@ -70,6 +75,10 @@ const App = () => {
         
     })
     setNewName('')
+    setErrorMessage(`${names.name} added to the phonebook.`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 3000)
   }
 }
  {/* Numeron lisäyksen tapahtumankäsittelijä */}
@@ -90,7 +99,6 @@ const App = () => {
         console.log(response)
         setPersons(persons.concat(response.data))    
     })
-    setNewName('')
     setNewNumber('')
   }
 }
@@ -107,7 +115,10 @@ const deletePerson = (id) => {
       lause etsii oikean nimen poistettavan id:n mukaan ja sitä käytetään confirm lauseessa. */}
       const findName= (persons.find(person => person.id === id))
       if (window.confirm(`Delete ${findName.name}?`)) {
-        alert("Person removed from phonebook")
+        setErrorMessage(`${findName.name} removed from phonebook.`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
       }
     })
     .catch(error => {
@@ -133,6 +144,7 @@ const peopleToShow = search
     <div>
       
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <SearchField search={handleSearch} />
       <Formfield handleSubmit={handleSubmit} newName={newName}
       handleName={handleName} newNumber={newNumber} handleNumber={handleNumber}/>
@@ -191,6 +203,16 @@ const PhonebookList = (props) => {
       </li>
       ))}
     </ul>
+    </div>
+  )
+}
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+  return (
+    <div className="error">
+      {message}
     </div>
   )
 }
