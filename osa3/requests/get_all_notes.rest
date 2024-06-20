@@ -1,2 +1,2 @@
-GET http://localhost:3001/persons
+DELETE  http://localhost:3001/api/persons/39-23-6423122
 
