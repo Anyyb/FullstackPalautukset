@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons = [
   {
@@ -55,6 +56,51 @@ app.delete('/api/persons/:number', (request, response) => {
   //statuskoodi no content
   response.status(204).end()
 })
+
+//luodaan uusi ID numero math.randomilla ja asetetaan luku arvoväliksi 500
+const generateID = () => {
+  const newID=Math.floor(Math.random() * 500)
+  return newID
+}
+
+// henkilön lisäys, tehdään post pyyntö polkuun /api/persons
+app.post('/api/persons',(request,response) => {
+    const body=request.body
+
+    // käsitellään jos pyynnöstä puuttuu nimi tai numero
+    if(!body.name || !body.number ){
+      // jos siältöä ei ole annetaan statuskoodi 400 bad request
+      return response.status(400).json({
+        error: 'name and number cannot be empty'
+      })
+    }
+    // käsitellään jos pyynnön numero tai nimi vastaa jo listalta löytyviä.
+    if(body.name || body.number === persons.name||persons.number){
+      // jos sisältö on sama annetaan statuskoodi 400 bad request
+      return response.status(400).json({
+       error: 'name and number must be unigue'
+      })
+    }
+
+    const person = {
+      id:generateID(),
+      name: body.name,
+      number:body.number,
+    }
+    persons = persons.concat(person)
+    response.json(person)
+})
+
+
+
+
+
+
+
+
+
+
+
 //portti .env tiedostosta tai käytetään 3001
 const PORT = process.env.PORT || 3001;
 //lisätty osoitteet konsoliin helpompaa sivujen seurantaa varten.
