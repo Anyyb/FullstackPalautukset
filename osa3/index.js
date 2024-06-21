@@ -1,6 +1,21 @@
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 app.use(express.json())
+
+app.use(morgan('tiny'))// käytetään morgan tinya ja näytetään tinyn sisältämät pyynnön perustiedot.
+app.use(morgan(':body'))// asetetaan moran käyttämään luotua tokenia ja näyttämään tiedot.
+
+// huomioni: tiedot tulostuivat konsoliin allekkain eivätkä saman tiny formaatin perään, 
+// koska olen asettanut sovelluksen käyttämään molempia erikseen. Kokeilin yhdistää, mutta ei toiminut.
+// POST /api/persons 200 50 - 3.807 ms
+//{"name":"John Snow","number":"040321408"}
+
+//luodaan morgan token nimellä body ja palautetaan pyynnöstä saatu data JSON muodossa (JSON.stringify:llä).
+morgan.token('body', function(request, response ) { 
+  return JSON.stringify(request.body)
+})
 
 let persons = [
   {
@@ -74,9 +89,12 @@ app.post('/api/persons',(request,response) => {
         error: 'name and number cannot be empty'
       })
     }
-    // käsitellään jos pyynnön numero tai nimi vastaa jo listalta löytyviä.
-    if(body.name || body.number === persons.name||persons.number){
-      // jos sisältö on sama annetaan statuskoodi 400 bad request
+    // etsitään löytyykö uusi nimi tai numero jo listalta ja tallennetaan tiedot muuttujiin.
+    const name = persons.find(person => person.name === body.name);
+    const number = persons.find(person => person.number === body.number);
+    //jos pyynnön numero tai nimi löytyy jo listalta,
+    if(name || number){
+      // ja sisältö on sama annetaan statuskoodi 400 bad request
       return response.status(400).json({
        error: 'name and number must be unigue'
       })
@@ -90,16 +108,6 @@ app.post('/api/persons',(request,response) => {
     persons = persons.concat(person)
     response.json(person)
 })
-
-
-
-
-
-
-
-
-
-
 
 //portti .env tiedostosta tai käytetään 3001
 const PORT = process.env.PORT || 3001;
