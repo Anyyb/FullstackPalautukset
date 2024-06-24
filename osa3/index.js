@@ -1,9 +1,11 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
+
 
 const app = express()
 app.use(express.json())
-
+app.use(cors())
 app.use(morgan('tiny'))// käytetään morgan tinya ja näytetään tinyn sisältämät pyynnön perustiedot.
 app.use(morgan(':body'))// asetetaan moran käyttämään luotua tokenia ja näyttämään tiedot.
 
