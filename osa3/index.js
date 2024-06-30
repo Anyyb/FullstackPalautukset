@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
+const person = require('./models/person')
 
 
 const app = express()
@@ -74,27 +75,20 @@ app.post('/api/persons',(request,response) => {
         error: 'name and number cannot be empty'
       })
     }
-    // etsitään löytyykö uusi nimi tai numero jo listalta ja tallennetaan tiedot muuttujiin.
-    const name = person.find(person => person.name === body.name);
-    const number = person.find(person => person.number === body.number);
+    // etsitään löytyykö uusi nimi tai numero jo listalta
+    //const exists= Person.findOne({$or: [{ name: body.name }, { number: body.number }]})
     //jos pyynnön numero tai nimi löytyy jo listalta,
-    if(name || number){
+    //if(exists){
       // ja sisältö on sama annetaan statuskoodi 400 bad request
-      return response.status(400).json({
-       error: 'name and number must be unigue'
-      })
-    }
-   // const person = {
-      //id:generateID(),
-      //name: body.name,
-      //number:body.number,
-   // }
+      //return response.status(400).json({
+       //error: 'name and number must be unigue'
+      //})
+    //}
     const person = new Person({
       name: body.name,
       number:body.number,
     })
     
-    //persons = persons.concat(person)
     //lisätään henkilö tietokantaan
     person.save().then(savedPerson => {
       response.json(savedPerson)
