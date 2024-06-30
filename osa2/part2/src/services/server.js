@@ -5,7 +5,7 @@ import axios from 'axios'
    asetetaan renderöitäväksi app-komponentin persons tilaan, kun tämä moduuli exportataan. */}
 
 /*const baseUrl = 'http://localhost:3001/persons'*/
-const baseUrl = 'api/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const getAll = () => {
   return axios.get(baseUrl)
