@@ -51,18 +51,12 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(404).end()
   }
 })
-// numeron poiston pyyntö tietokannasta
+// numeron poisto tietokannasta
 app.delete('/api/persons/:number', (request, response) => {
-  Person.findOne({number:request.params.number}).then(person =>{
-    Person.deleteOne(person)
+    Person.findOneAndDelete({ number:request.params.number}).then(result => {
     response.status(204).end()
   })
 })
-//luodaan uusi ID numero math.randomilla ja asetetaan luku arvoväliksi 500
-//const generateID = () => {
-  //const newID=Math.floor(Math.random() * 500)
-  //return newID
-//}
 
 // henkilön lisäys, tehdään post pyyntö polkuun /api/persons
 app.post('/api/persons',(request,response) => {
