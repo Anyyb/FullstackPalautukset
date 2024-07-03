@@ -21,11 +21,9 @@ const App = () => {
     })
   }, [])
 
-  {/* Tapahtumankäsittelijä lomakkeen käsittelylle,
-   jotta molemmat muutokset ppäivittyvät persons tilan listaan samalla formilla. */}
+  {/* Tapahtumankäsittelijä lomakkeen käsittelylle*/}
   const handleSubmit = (event) => {
-    addNewName(event)
-    addNewNumber(event)
+    addNewPerson(event)
   }
 
  {/* Tapahtumankäsittelijät lomakkeen uuden nimen käsittelylle ja numeron,
@@ -39,93 +37,77 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
- {/* Nimen lisäyksen tapahtumankäsittelijä ja numeron päivitys*/}
-  const addNewName= (event) => {
+ {/* Henkilön lisäyksen tapahtumankäsittelijä ja henkilön numeron päivitys*/}
+  const addNewPerson= (event) => {
     {/* Lomakkeen oletusarvoinen toiminta estetty */}
     event.preventDefault()
     console.log('Uusi nimi lisätty')
+    //alustetaan names objekti ja annetaan sille alustava tieto nimi: newName ja numero: newNumber
     const names = {
      name: newName,
-     number: newNumber}
+     number: newNumber
+    }
+    //etsitään henkilöä nimen perusteella ja verrataan uuteen nimeen.
     const check = persons.find(({ name }) => name === newName)
     console.log(check)
+    //jos nimi löytyy jo, kysytään haluaako käyttäjä päivittää numeron.
     if(check){
-      setErrorMessage(`${check.name} already in the phonebook. Update existing number to ${newNumber} ?`)
-      setTimeout(() => {
-      setErrorMessage(null)
-      }, 3000)
-    {
-        server
-          .updateNumber(check.id, check.number)
+      if (window.confirm(`${check.name} already in the phonebook. Do you want to update the number to ${newNumber}?`)) {
+      {
+    //kommunikoidaan palvelimen kanssa server.js avulla käyttäen updateNumber PUT metodia tiedon päivittämiseen
+      server
+          .updateNumber(check.id, newName , newNumber)
           .then(response => {
           console.log(response)
           setPersons(persons.map(person => person.id !== check.id ? person: response.data))
-          setNewNumber('')
+          setErrorMessage(`Updated existing person ${check.name}'s number to ${newNumber}.`)
+          setTimeout(() => {
+          setErrorMessage(null)
+          }, 4000)
       })
         .catch(error => {
-         console.error('virhe päivittäessä')
-      })
+         console.error('virhe numeroa päivittäessä')
+        })
     }
-    } else {
-      server
-        .addNewName(names)
-        .then(response => {
+  }
+  // jos henkilöä ei ollut jo olemassa lisätään henkilö
+  } else {
+    server
+      .addNewPerson(names)
+      .then(response => {
         console.log(response)
         setPersons(persons.concat(response.data))
-        
+      setErrorMessage(`${newName} added to the phonebook.`);
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 4000)
     })
-    setNewName('')
-    setErrorMessage(`${names.name} added to the phonebook.`)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 3000)
-  }
 }
- {/* Numeron lisäyksen tapahtumankäsittelijä */}
-  const addNewNumber = (event) => {
-    event.preventDefault();
-    console.log('Uusi numero lisätty')
-    const numbers = {
-     name: newName,
-     number: newNumber }
-    const check = persons.find(({ number }) => number === newNumber)
-    console.log(check)
-    if (check) {
-      alert(`${newNumber} already on the list`)
-    } else {
-      server
-        .addNewNumber(numbers)
-        .then(response => {
-        console.log(response)
-        setPersons(persons.concat(response.data))    
-    })
-    setNewNumber('')
-  }
 }
-
 {/* Henkilön poistamisen tapahtumankäsittelijäfunktio */}
 const deletePerson = (id) => {
+{/* poisto tapahtuu id:n perusteella ja lisäämme kyseisen id:n muuttujaan findName
+    lause etsii oikean nimen poistettavan id:n mukaan ja sitä käytetään confirm lauseessa. */}
+const findName= (persons.find(person => person.id === id))
+if (window.confirm(`Delete ${findName.name}?`)) {
 {/* kommunikointi palvelimen kanssa tapahtuu erillisen server.js moduulin kautta */}
   server
     .deleteNameandNumber(id)
     .then(response => {
       console.log('Deleted:', response.data);
       setPersons(persons.filter(person => person.id !== id))
-     {/* poisto tapahtuu id:n perusteella ja lisäämme kyseisen id:n muuttujaan findName
-      lause etsii oikean nimen poistettavan id:n mukaan ja sitä käytetään confirm lauseessa. */}
-      const findName= (persons.find(person => person.id === id))
-      if (window.confirm(`Delete ${findName.name}?`)) {
         setErrorMessage(`${findName.name} removed from phonebook.`)
         setTimeout(() => {
           setErrorMessage(null)
         }, 3000)
-      }
     })
     .catch(error => {
       console.error("Error dataa poistettaessa", error)
 })
 console.log('henkilö poistettu')
-}
+} else {
+  console.log(`henkikön poisto ${findName.name} peruutettu.`);
+}}
 
 {/* Käsittelee suoritettavan haun ja päivittää sen search tilaan */}
 const handleSearch = (event) => {

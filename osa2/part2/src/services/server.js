@@ -5,30 +5,26 @@ import axios from 'axios'
    asetetaan renderöitäväksi app-komponentin persons tilaan, kun tämä moduuli exportataan. */}
 
 /*const baseUrl = 'http://localhost:3001/persons'*/
-const baseUrl = 'api/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const getAll = () => {
   return axios.get(baseUrl)
 }
 
-const addNewName = (newName) => {
-  return axios.post(baseUrl, newName)
+const addNewPerson = (newPerson) => {
+  return axios.post(baseUrl, newPerson)
 }
 
-const addNewNumber = (newNumber) => {
-  return axios.post(baseUrl, newNumber)
-}
 const deleteNameandNumber = (id) => {
   return axios.delete(`${baseUrl}/${id}`)
 }
-const updateNumber = (id, newNumber) => {
-  return axios.put(`${baseUrl}/${id}`, newNumber)
+const updateNumber = (id,newPerson, newNumber) => {
+  return axios.put(`${baseUrl}/${id}`,{ name: newPerson, number: newNumber })
 }
 
 export default {
     getAll,
-    addNewName,
-    addNewNumber,
+    addNewPerson,
     deleteNameandNumber,
     updateNumber
 }
