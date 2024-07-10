@@ -47,6 +47,18 @@ const App = () => {
      name: newName,
      number: newNumber
     }
+    if(newName.length<3){
+      setErrorMessage(`Name is too short. Name must have 3 or more letters.`)
+      setTimeout(() => {
+      setErrorMessage(null)
+      }, 4000)
+    }
+    if (!newNumber.match(/^\d{3}-\d{5}$/)) {
+      setErrorMessage(`Error, number must be in the correct format: XXX-XXXXX`);
+      setTimeout(() => {
+      setErrorMessage(null)
+      }, 4000)
+    }
     //etsitään henkilöä nimen perusteella ja verrataan uuteen nimeen.
     const check = persons.find(({ name }) => name === newName)
     console.log(check)
