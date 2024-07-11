@@ -20,29 +20,29 @@ mongoose.connect(url)
 
 // määritellään Schema, miten tiedot tallennetaan tietokantaan
 const personSchema = new mongoose.Schema({
-    name: String,
-    number:String,
+  name: String,
+  number:String,
 })
 //määritellään mihin collectioniin tiedot tallennetaan
 const Person = mongoose.model('Person', personSchema)
 
-//asetetaan komentoriviparametrina saadut tiedot tietokannan collectionin schemaan. 
+//asetetaan komentoriviparametrina saadut tiedot tietokannan collectionin schemaan.
 const person = new Person({
-    name: insertName,
-    number:insertNumber,
+  name: insertName,
+  number:insertNumber,
 })
 //jos nimi ja numero on annettu lisätään uusi henkilö, jos ei haetaan ja näytetään tietokannassa olevat tiedot.
 if(insertName && insertNumber)
-  person.save().then(result => {
+  person.save().then(() => {
     console.log('person saved!')
     console.log('Added',person)
     mongoose.connection.close()
-})
+  })
 else {
   Person.find({}).then(result => {
-  result.forEach(person => {
-  console.log(person)
-})
-  mongoose.connection.close()
+    result.forEach(person => {
+      console.log(person)
+    })
+    mongoose.connection.close()
 
-})}
+  })}

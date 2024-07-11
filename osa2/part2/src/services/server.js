@@ -4,8 +4,8 @@ import axios from 'axios'
    jos yhteys onnistuu ja palvelin on käynnissä promise on fulfilled ja haettu data 
    asetetaan renderöitäväksi app-komponentin persons tilaan, kun tämä moduuli exportataan. */}
 
-const baseUrl = 'http://localhost:3001/api/persons'
-//const baseUrl = '/api/persons'//
+//const baseUrl = 'http://localhost:3001/api/persons'//
+const baseUrl = '/api/persons'
 
 const getAll = () => {
   return axios.get(baseUrl)

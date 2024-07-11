@@ -53,7 +53,8 @@ const App = () => {
       setErrorMessage(null)
       }, 4000)
     }
-    if (!newNumber.match(/^\d{3}-\d{5}$/)) {
+    //tarkistetaan, että numero on oikeassa muodossa ja annetaan errori käyttäjälle.
+    if (!newNumber.match(/^\d{3}-\d{5,}$/)) {
       setErrorMessage(`Error, number must be in the correct format: XXX-XXXXX`);
       setTimeout(() => {
       setErrorMessage(null)
