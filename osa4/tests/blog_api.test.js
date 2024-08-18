@@ -64,6 +64,48 @@ test('new blog was added succesfully', async () => {
   assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
   assert.strictEqual(title.includes('Apple Pie'),true)
 })
+
+// testi, jos ei anneta arvoa arvo on 0
+test('if likes value is not given value is 0', async () => {
+  const newBlog = {
+    title: 'Kirjonnan alkeita',
+    author: 'Martta Muori',
+    url: 'MarttamuorenKirjontaa',
+    likes: '',
+  }
+  if (newBlog.likes === '')
+    newBlog.likes= '0'
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+
+  const response = await api.get('/api/blogs')
+  const likes = response.body.map(blog => blog.likes)
+  assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
+  assert.strictEqual(likes.includes(0),true)
+})
+// testi blogin poistamiseksi.
+test(' blog deleted successfully', async () => {
+
+// haetaan blogit ja määritellään poistettava blogi
+  const blogsAtStart = await api.get('/api/blogs') 
+  const body = blogsAtStart.body
+  const deleteBlog = body[1]
+
+// poistetaan blogi poistettavan blogin id:llä
+  await api
+    .delete(`/api/blogs/${deleteBlog.id}`)
+    .expect(204)
+  
+// haetaan taas blogit ja tarkastellaan, että halutun blogin poisto onnistui   
+  const response = await api.get('/api/blogs') 
+  const blogs = response.body.map(blog => blog.id)
+  assert(!blogs.includes(deleteBlog.id))
+  assert.strictEqual(response.body.length, helper.initialBlogs.length - 1)
+})
+ 
 after(async () => {
   await mongoose.connection.close()
 })
