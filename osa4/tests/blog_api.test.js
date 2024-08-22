@@ -34,6 +34,10 @@ test('there are two blogs in test database ', async () => {
 })
 // testi, joka tarkistaa, että identifoiva kenttä id on 
 // ja verrataan arvot, lopuksi tulostetaan arvot.
+
+// jestin expect ja toBeDefine ei toiminut muiden (node) testien kanssa
+//expect(blogs.id).toBeDefined()
+
 test('there is id field and id for blogs in the database ', async () => {
   const response = await api.get('/api/blogs')
   const blogs = response.body.map(blog => blog.id)
