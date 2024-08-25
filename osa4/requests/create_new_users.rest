@@ -1,0 +1,35 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "käyttäjä1",
+    "name": "Joku Jokunen",
+    "password": "salainen"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "käyttäjä2",
+    "name": "Toope Toinen",
+    "password": "salainen"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "kä",
+    "name": "Virhe Virheellinen",
+    "password": "sal"
+}
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "",
+    "name": "Virhe Virheellinen2",
+    "password": "salainen"
+}
