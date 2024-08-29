@@ -5,7 +5,8 @@ Content-Type: application/json
     "author": "Jamie Oliver",
     "title": "Crispy Moroccan carrots",
     "url":"jamieoliverinsivut",
-    "likes": 5
+    "likes": 5,
+    "userId":"66c7bc7b4c7eb6ac18c1542a"
 }
 ###
 
@@ -16,5 +17,18 @@ Content-Type: application/json
     "author": "Joku Jokunen",
     "title": "Kuinka opin kutomaan",
     "url":"Jokujokusensivut",
-    "likes":"10"
+    "likes":"10",
+    "userId":"66c7bc7b4c7eb6ac18c1542a"
+}
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "author": "Kana Kananen",
+    "title": "Syökää porkkanaa",
+    "url":"KanaKanasensivut",
+    "likes":"3",
+    "userId":"66c7b80f4183cc2d98a4a10c"
+
 }
