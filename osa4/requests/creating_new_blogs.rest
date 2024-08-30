@@ -32,3 +32,27 @@ Content-Type: application/json
     "userId":"66c7b80f4183cc2d98a4a10c"
 
 }
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer jatähänvaliditoken
+
+{
+    "author": "Viherpeukalo Kukkamaa",
+    "title": "Näin kasvatata kauniita hortensioita",
+    "url":"Viherpeukalonsivut",
+    "likes":"7"
+
+}
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer jatähänvaliditoken
+
+{
+    "author": "Peter Pan",
+    "title": "Älä kasva aikuiseksi",
+    "url":"Peterpaninsivut",
+    "likes":"99"
+
+}

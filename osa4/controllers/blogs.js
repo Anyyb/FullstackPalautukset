@@ -1,16 +1,36 @@
 const blogsRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+
+// haetaan token headerista
+//const getTokenFrom = request => {
+  //const authorization = request.get('authorization')
+  //if (authorization && authorization.startsWith('Bearer ')) {
+   // return authorization.replace('Bearer ', '')
+  //}
+ // return null
+//}
 
 //haetaan blogi collectionin tiedot, async/await funktio
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
   })
-  //blogin lisäys async/await funktio
+  
+  //blogin lisäys ja tokenin varmistus pyynnön yhteydessä
   blogsRouter.post('/', async (request, response) => {
     const body = request.body
-    const user = await User.findById(body.userId)
+
+  //varmistetaan että token on oikea ja palautetaan dekoodattu olio jossa on tieto siitä kuka pyynnön teki
+    const decodedToken = jwt.verify(request.token, process.env.SECRET) 
+
+  // jos tokenia ei ole asetettu
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
 
     const blog = new Blog({
       author: body.author,
@@ -26,6 +46,7 @@ blogsRouter.get('/', async (request, response) => {
 
     response.status(201).json(savedBlog)
   })
+
   //blogin poisto async/await funktio
   blogsRouter.delete('/:id', async (request, response) => {
     const deleteBlog= await Blog.findByIdAndDelete(request.params.id)

@@ -33,3 +33,12 @@ Content-Type: application/json
     "name": "Virhe Virheellinen2",
     "password": "salainen"
 }
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "name": " Maija Meikäläinen",
+    "password": "enkerro"
+}
