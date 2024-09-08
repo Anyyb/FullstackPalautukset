@@ -14,6 +14,7 @@ const App = () => {
   const [newUrl, setNewUrl] = useState('')
   const [newLike, setNewLike] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [addBlogVisible, setaddBlogVisible] = useState(false)
  
 //haetaan blogit
   useEffect(() => {
@@ -91,7 +92,7 @@ const App = () => {
             <button onClick={handleLogout}>Log out</button>
             <p>{user.name} logged in</p> 
               {<BlogList blogs={blogs}/>}
-              {<AddBlogForm handleAddNewBlog={handleAddNewBlog} newTitle={newTitle} setNewTitle={setNewTitle}setNewAuthor={setNewAuthor}
+              {<AddBlogForm addBlogVisible={addBlogVisible} setaddBlogVisible={setaddBlogVisible} handleAddNewBlog={handleAddNewBlog} newTitle={newTitle} setNewTitle={setNewTitle}setNewAuthor={setNewAuthor}
               setNewUrl={setNewUrl}setNewLike={setNewLike}/>}
             </div>
             } 
@@ -136,41 +137,48 @@ const LoginForm=(props)=>{
   </div>
   )
 }
-const AddBlogForm = (props) => {
+const AddBlogForm = ({ addBlogVisible, setaddBlogVisible, handleAddNewBlog, 
+  newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, newLike, setNewLike }) => {
+  const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
+  const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
   return (
     <div>
-      <form onSubmit={props.handleAddNewBlog}>
+      <div style={hideWhenVisible}>
+          <button onClick={() => setaddBlogVisible(true)}>Add new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+      <form onSubmit={handleAddNewBlog}>
         <div>
         <div>
         Title: 
         <input 
         type="text"
-        value={props.newTitle}
-        onChange={({ target }) => props.setNewTitle(target.value)}
+        value={newTitle}
+        onChange={({ target }) => setNewTitle(target.value)}
         />
         </div>
         <div>
         Author: 
         <input
         type="text" 
-        value={props.newAuthor}
-        onChange={({ target }) => props.setNewAuthor(target.value)}
+        value={newAuthor}
+        onChange={({ target }) => setNewAuthor(target.value)}
         />
         </div>
         <div>
         Url: 
         <input 
         type="text"
-        value={props.newUrl}
-        onChange={({ target }) => props.setNewUrl(target.value)}
+        value={newUrl}
+        onChange={({ target }) => setNewUrl(target.value)}
         />
         </div>
         <div>
         Likes: 
         <input 
         type="number"
-        value={props.newLike}
-        onChange={({ target }) => props.setNewLike(target.value)}
+        value={newLike}
+        onChange={({ target }) => setNewLike(target.value)}
         />
         </div>
         </div>
@@ -178,8 +186,10 @@ const AddBlogForm = (props) => {
         <div>
           <button type="submit">add</button>
         </div>
-
+        
       </form>
+      <button onClick={() => setaddBlogVisible(false)}>cancel</button>
+      </div>
     </div>
   )
 }
