@@ -10,7 +10,6 @@ const AddBlogForm = ({ createNewBlog }) => {
     const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
     const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
 
-
     //uuden blogin lisäyksen tapahtumankäsittelijä
     const handleAddNewBlog =  async (event) => {
       event.preventDefault()
@@ -21,7 +20,6 @@ const AddBlogForm = ({ createNewBlog }) => {
         url: newUrl,
         likes: newLike,
     }
-  
       await
       // täytyy asettaa uusi blogi createNewBlog funktioon
       createNewBlog(newBlog)
@@ -35,7 +33,7 @@ const AddBlogForm = ({ createNewBlog }) => {
     return (
       <div>
         <div style={hideWhenVisible}>
-            <button onClick={() => setaddBlogVisible(true)}>Add new blog</button>
+            <button className="button" onClick={() => setaddBlogVisible(true)}>Add new blog</button>
           </div>
           <div style={showWhenVisible}>
         <form onSubmit={handleAddNewBlog}>
@@ -79,11 +77,11 @@ const AddBlogForm = ({ createNewBlog }) => {
           </div>
   
           <div>
-            <button type="submit">add</button>
+            <button className="button" type="submit">add</button>
           </div>
           
         </form>
-        <button onClick={() => setaddBlogVisible(false)}>cancel</button>
+        <button className="button" onClick={() => setaddBlogVisible(false)}>cancel</button>
         </div>
       </div>
     )

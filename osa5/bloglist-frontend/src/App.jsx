@@ -74,8 +74,8 @@ const App = () => {
         setPassword={setPassword}/>} 
         {user && 
           <div>
-            <button onClick={handleLogout}>Log out</button>
-            <p>{user.name} logged in</p> 
+            <button className="button" onClick={handleLogout}>Log out</button>
+            <h4>{user.name} logged in</h4> 
               {<BlogList blogs={blogs}/>}
               {<AddBlogForm createNewBlog={addNewBlog}/>}
             </div>
@@ -116,7 +116,7 @@ const LoginForm=(props)=>{
             onChange={({ target }) => props.setPassword(target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button className="button" type="submit">Login</button>
       </form> 
   </div>
   )

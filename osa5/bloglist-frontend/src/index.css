@@ -7,3 +7,15 @@
     padding: 10px;
     margin-bottom: 10px;
   }
+.blog {
+    padding-Top: 10;
+    padding-Left: 2;
+    border: solid;
+    border-Width: 1;
+    margin-Bottom: 5;
+}
+.button {
+  background-color: transparent;
+  color: black;
+  border: solid;
+}
