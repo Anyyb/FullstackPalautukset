@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import AddBlogForm from './components/BlogForm'
 import './index.css'
 
 const App = () => {
@@ -9,12 +10,7 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newTitle, setNewTitle] = useState('')
-  const [newUrl, setNewUrl] = useState('')
-  const [newLike, setNewLike] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
-  const [addBlogVisible, setaddBlogVisible] = useState(false)
  
 //haetaan blogit
   useEffect(() => {
@@ -50,7 +46,7 @@ const App = () => {
       setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
-      }, 5000)
+      }, 7000)
     }
   }
   //uloskirjautumisen tapahtumankäsittelijä
@@ -59,24 +55,13 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
     setUser(null)
   }
-  //uuden blogin lisäyksen tapahtumankäsittelijä
-  const handleAddNewBlog =  async (event) => {
-    event.preventDefault()
+  // käytetään komponentista BlogForm tapahtumankäsittelijää funktiolla createNewBlog
+  // jonka se saa parametrina.
+  const addNewBlog =  async ( createNewBlog ) => {
     console.log('New Blog added')
-
-    const newblog = { 
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
-      likes: newLike,
-  }
-  await
-    blogService.create(newblog)
-    setNewTitle(newTitle)
-    setNewAuthor(newAuthor)
-    setNewUrl(newUrl)
-    setNewLike(newLike)
-    setErrorMessage(` New blog added in blogs: Title: ${newTitle}.`)
+    await
+    blogService.create(createNewBlog)
+    setErrorMessage(` New blog added in blogs: Title: ${createNewBlog.title}.`)
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
@@ -92,8 +77,7 @@ const App = () => {
             <button onClick={handleLogout}>Log out</button>
             <p>{user.name} logged in</p> 
               {<BlogList blogs={blogs}/>}
-              {<AddBlogForm addBlogVisible={addBlogVisible} setaddBlogVisible={setaddBlogVisible} handleAddNewBlog={handleAddNewBlog} newTitle={newTitle} setNewTitle={setNewTitle}setNewAuthor={setNewAuthor}
-              setNewUrl={setNewUrl}setNewLike={setNewLike}/>}
+              {<AddBlogForm createNewBlog={addNewBlog}/>}
             </div>
             } 
     </div>
@@ -137,62 +121,7 @@ const LoginForm=(props)=>{
   </div>
   )
 }
-const AddBlogForm = ({ addBlogVisible, setaddBlogVisible, handleAddNewBlog, 
-  newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, newLike, setNewLike }) => {
-  const hideWhenVisible = { display: addBlogVisible ? 'none' : '' }
-  const showWhenVisible = { display: addBlogVisible ? '' : 'none' }
-  return (
-    <div>
-      <div style={hideWhenVisible}>
-          <button onClick={() => setaddBlogVisible(true)}>Add new blog</button>
-        </div>
-        <div style={showWhenVisible}>
-      <form onSubmit={handleAddNewBlog}>
-        <div>
-        <div>
-        Title: 
-        <input 
-        type="text"
-        value={newTitle}
-        onChange={({ target }) => setNewTitle(target.value)}
-        />
-        </div>
-        <div>
-        Author: 
-        <input
-        type="text" 
-        value={newAuthor}
-        onChange={({ target }) => setNewAuthor(target.value)}
-        />
-        </div>
-        <div>
-        Url: 
-        <input 
-        type="text"
-        value={newUrl}
-        onChange={({ target }) => setNewUrl(target.value)}
-        />
-        </div>
-        <div>
-        Likes: 
-        <input 
-        type="number"
-        value={newLike}
-        onChange={({ target }) => setNewLike(target.value)}
-        />
-        </div>
-        </div>
 
-        <div>
-          <button type="submit">add</button>
-        </div>
-        
-      </form>
-      <button onClick={() => setaddBlogVisible(false)}>cancel</button>
-      </div>
-    </div>
-  )
-}
 const Notification = ({ message }) => {
   if (message === null) {
     return null
