@@ -1,36 +1,25 @@
 import { useState} from 'react'
-
-// Blog komponentti ja miten tiedot näytetään.
-// Tyylit asetettu index.css, vaikka olisin voinut asettaa tähän. 
-// Halusin muokata vain yhdestä tiedostosta.
-// muokkasin myös buttonien näköä.
-
-const Blog = ({ blog }) => {
-    //const blogStyle = {
-    //paddingTop: 10,
-    //paddingLeft: 2,
-    //border: 'solid',
-    //borderWidth: 1,
-    // marginBottom: 5
-    //}
+const Blog = ({ blog, whenDeleted, whenLiked}) => {
   const [blogsVisible, setBlogsVisible] = useState(false)
 
   const hideWhenVisible = { display: blogsVisible ? 'none' : '' }
   const showWhenVisible = { display: blogsVisible ? '' : 'none' }
 
+  
   return(
-  //<div style={blogStyle}>
   <div className="blog">  
   <ul>
     
     <li><h4>Title: {blog.title}</h4>
+    <button className="button" onClick={() => whenDeleted(blog.id)}>Delete</button>
     <div style={hideWhenVisible}>
       <button className="button" onClick={() => setBlogsVisible(true)}>Show more</button>
     </div>
     <div style={showWhenVisible}>
     <p>Author: {blog.author}</p>
     <p>Url: {blog.url}</p>
-    <p>Likes: {blog.likes}</p><button className="button" type="submit">Like</button>
+    <p>Likes: {blog.likes}</p>
+    <button className="button" onClick={() => whenLiked(blog.id)}>Like</button>
     <p>Username: {blog.username}</p>
     </div>
     </li>

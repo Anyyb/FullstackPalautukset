@@ -61,11 +61,46 @@ const App = () => {
     console.log('New Blog added')
     await
     blogService.create(createNewBlog)
+    setBlogs(blogs.concat(createNewBlog))
     setErrorMessage(` New blog added in blogs: Title: ${createNewBlog.title}.`)
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
   }
+  //blogin poisto
+  const deleteBlog = async(id) => {
+    console.log('Blog Deleted')
+    const findBlog=(blogs.find(blog => blog.id === id))
+    if(window.confirm(`Delete ${findBlog.title}?`))
+    
+    await
+    blogService.deleteBlog(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
+    setErrorMessage(` Blog deleted: ${findBlog.title}.`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
+  }
+  //blogin tykkäys
+  //haen blogin id:n ja välitän id:n sekä päivitetyn tykkäyksen backendille
+ // järjestän blogit pienestä suurempaan
+  const likeBlog = async(id) => {
+    console.log('Blog like updated')
+    const findBlog=(blogs.find(blog => blog.id === id))
+
+    const updated = { 
+      author: findBlog.author,
+      title: findBlog.title,
+      url: findBlog.url,
+      likes: findBlog.likes + 1
+  }
+    await
+    blogService.update(id, updated)
+    const updatedBlogs = blogs.map(blog => blog.id === id ? updated : blog)
+    updatedBlogs.sort((compare, blog) => compare.likes - blog.likes)
+    setBlogs(updatedBlogs)
+  }
+
   //renderöidään näkymä
   return (
     <div>
@@ -76,21 +111,21 @@ const App = () => {
           <div>
             <button className="button" onClick={handleLogout}>Log out</button>
             <h4>{user.name} logged in</h4> 
-              {<BlogList blogs={blogs}/>}
+              {<BlogList blogs={blogs}  whenLiked={likeBlog} whenDeleted={deleteBlog}/>}
               {<AddBlogForm createNewBlog={addNewBlog}/>}
             </div>
             } 
     </div>
   )
 }
-//refaktoroidaan komponentit 
-const BlogList=(props)=>{
-  return(
+//annetaan bloglistille propseiksi blogien renderöitävä näkymä ja whenLiked, whenDeleted funktiot
+const BlogList = ({ blogs, whenLiked, whenDeleted }) => {
+  return (
     <div>
       <h2>Blogs:</h2>
-      {props.blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} whenLiked={ whenLiked} whenDeleted={whenDeleted} />
+      ))}
     </div>
   )
 }

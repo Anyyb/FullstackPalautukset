@@ -9,11 +9,11 @@ const User = require('../models/user')
   //if (authorization && authorization.startsWith('Bearer ')) {
    // return authorization.replace('Bearer ', '')
   //}
- // return null
-//}
+  // return null
+  //}
 
-//haetaan blogi collectionin tiedot, async/await funktio
-blogsRouter.get('/', async (request, response) => {
+  //haetaan blogi collectionin tiedot, async/await funktio
+  blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
   })
@@ -47,9 +47,25 @@ blogsRouter.get('/', async (request, response) => {
     response.status(201).json(savedBlog)
   })
 
+  //blogin tietojen päivitys
+  blogsRouter.put('/:id',async (request, response ) => {
+    const body = request.body
+
+    const blog = ({
+      author: body.author,
+      title: body.title,
+      url: body.url,
+      likes: body.likes
+    })
+    const updateLike = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.json(updateLike)
+    })
+    
+    
   //blogin poisto async/await funktio
   blogsRouter.delete('/:id', async (request, response) => {
     const deleteBlog= await Blog.findByIdAndDelete(request.params.id)
+    console.log(request.params.id)
     response.status(204).end()
     console.log("deleted:", deleteBlog )
     
