@@ -3,22 +3,23 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import AddBlogForm from './components/BlogForm'
+import PropTypes from 'prop-types'
 import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
- 
-//haetaan blogit
+
+  //haetaan blogit
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
-//talletetaan kirjautuneen käyttäjän token local storageen
+  //talletetaan kirjautuneen käyttäjän token local storageen
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -27,7 +28,7 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-//kirjautumisen tapahtumankäsittelijä
+  //kirjautumisen tapahtumankäsittelijä
   const handleLogin =  async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
@@ -37,7 +38,7 @@ const App = () => {
       })
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -72,9 +73,9 @@ const App = () => {
     console.log('Blog Deleted')
     const findBlog=(blogs.find(blog => blog.id === id))
     if(window.confirm(`Delete ${findBlog.title}?`))
-    
-    await
-    blogService.deleteBlog(id)
+
+      await
+      blogService.deleteBlog(id)
     setBlogs(blogs.filter(blog => blog.id !== id))
     setErrorMessage(` Blog deleted: ${findBlog.title}.`)
     setTimeout(() => {
@@ -83,17 +84,17 @@ const App = () => {
   }
   //blogin tykkäys
   //haen blogin id:n ja välitän id:n sekä päivitetyn tykkäyksen backendille
- // järjestän blogit pienestä suurempaan
+  // järjestän blogit pienestä suurempaan
   const likeBlog = async(id) => {
     console.log('Blog like updated')
     const findBlog=(blogs.find(blog => blog.id === id))
 
-    const updated = { 
+    const updated = {
       author: findBlog.author,
       title: findBlog.title,
       url: findBlog.url,
       likes: findBlog.likes + 1
-  }
+    }
     await
     blogService.update(id, updated)
     const updatedBlogs = blogs.map(blog => blog.id === id ? updated : blog)
@@ -104,17 +105,17 @@ const App = () => {
   //renderöidään näkymä
   return (
     <div>
-        <Notification message={errorMessage}/>
-        {!user && <LoginForm handleLogin={handleLogin} username={username}password={password} setUsername={setUsername}
-        setPassword={setPassword}/>} 
-        {user && 
+      <Notification message={errorMessage}/>
+      {!user && <LoginForm handleLogin={handleLogin} username={username}password={password} setUsername={setUsername}
+        setPassword={setPassword}/>}
+      {user &&
           <div>
             <button className="button" onClick={handleLogout}>Log out</button>
-            <h4>{user.name} logged in</h4> 
-              {<BlogList blogs={blogs}  whenLiked={likeBlog} whenDeleted={deleteBlog}/>}
-              {<AddBlogForm createNewBlog={addNewBlog}/>}
-            </div>
-            } 
+            <h4>{user.name} logged in</h4>
+            {<BlogList blogs={blogs}  whenLiked={likeBlog} whenDeleted={deleteBlog}/>}
+            {<AddBlogForm createNewBlog={addNewBlog}/>}
+          </div>
+      }
     </div>
   )
 }
@@ -129,11 +130,11 @@ const BlogList = ({ blogs, whenLiked, whenDeleted }) => {
     </div>
   )
 }
-const LoginForm=(props)=>{
+const LoginForm=(props) => {
   return(
     <div>
-       <h2>Login</h2>
-       <form onSubmit={props.handleLogin}>
+      <h2>Login</h2>
+      <form onSubmit={props.handleLogin}>
         <div>
           username: <input
             type="text"
@@ -144,7 +145,7 @@ const LoginForm=(props)=>{
         </div>
         <div>
           password:
-            <input
+          <input
             type="password"
             value={props.password}
             name="Password"
@@ -152,11 +153,15 @@ const LoginForm=(props)=>{
           />
         </div>
         <button className="button" type="submit">Login</button>
-      </form> 
-  </div>
+      </form>
+    </div>
   )
 }
-
+LoginForm.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+}
 const Notification = ({ message }) => {
   if (message === null) {
     return null
