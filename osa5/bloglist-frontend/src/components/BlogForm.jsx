@@ -31,7 +31,7 @@ const AddBlogForm = ({ createNewBlog }) => {
   }
 
   return (
-    <div>
+    <div className="blogform">
       <div style={hideWhenVisible}>
         <button className="button" onClick={() => setaddBlogVisible(true)}>Add new blog</button>
       </div>
@@ -44,6 +44,7 @@ const AddBlogForm = ({ createNewBlog }) => {
                 name="title"
                 type="text"
                 value={newTitle}
+                id='title-input'
                 onChange={({ target }) => setNewTitle(target.value)}
               />
             </div>

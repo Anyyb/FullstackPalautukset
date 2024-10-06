@@ -31,7 +31,7 @@ const App = () => {
   //kirjautumisen tapahtumankäsittelijä
   const handleLogin =  async (event) => {
     event.preventDefault()
-    console.log('logging in with', username, password)
+    console.log('logging in with', username)
     try {
       const user = await loginService.login({
         username, password,
@@ -122,7 +122,7 @@ const App = () => {
 //annetaan bloglistille propseiksi blogien renderöitävä näkymä ja whenLiked, whenDeleted funktiot
 const BlogList = ({ blogs, whenLiked, whenDeleted }) => {
   return (
-    <div>
+    <div className="blog">
       <h2>Blogs:</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} whenLiked={ whenLiked} whenDeleted={whenDeleted} />

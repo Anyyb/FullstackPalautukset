@@ -12,7 +12,7 @@ const Blog = ({ blog, whenDeleted, whenLiked }) => {
 
         <li><h4>Title: {blog.title}</h4>
           <button className="button" onClick={() => whenDeleted(blog.id)}>Delete</button>
-          <div style={hideWhenVisible}>
+          <div style={hideWhenVisible} className="togglableContent">
             <button className="button" onClick={() => setBlogsVisible(true)}>Show more</button>
           </div>
           <div style={showWhenVisible}>
