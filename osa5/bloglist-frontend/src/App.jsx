@@ -77,7 +77,7 @@ const App = () => {
       await
       blogService.deleteBlog(id)
     setBlogs(blogs.filter(blog => blog.id !== id))
-    setErrorMessage(` Blog deleted: ${findBlog.title}.`)
+    setErrorMessage(`Blog deleted: ${findBlog.title}`)
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
@@ -100,6 +100,10 @@ const App = () => {
     const updatedBlogs = blogs.map(blog => blog.id === id ? updated : blog)
     updatedBlogs.sort((compare, blog) => compare.likes - blog.likes)
     setBlogs(updatedBlogs)
+    setErrorMessage('Blog liked')
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
   }
 
   //renderöidään näkymä
@@ -137,6 +141,7 @@ const LoginForm=(props) => {
       <form onSubmit={props.handleLogin}>
         <div>
           username: <input
+            data-testid='username'
             type="text"
             value={props.username}
             name="Username"
@@ -146,6 +151,7 @@ const LoginForm=(props) => {
         <div>
           password:
           <input
+            data-testid='password'
             type="password"
             value={props.password}
             name="Password"
